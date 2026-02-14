@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Akbarloh Browser</title>
+    <style>
+      :root {
+        --blue: #49a8ff;
+        --white: #ffffff;
+        --shadow: 0 20px 50px rgba(26, 84, 150, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, var(--blue) 0%, #9fd3ff 45%, var(--white) 100%);
+      }
+
+      .browser {
+        width: min(92vw, 900px);
+        height: min(78vh, 560px);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+      }
+
+      .browser-top {
+        height: 62px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: linear-gradient(180deg, rgba(73, 168, 255, 0.23), rgba(255, 255, 255, 0.95));
+        border-bottom: 1px solid rgba(55, 137, 218, 0.18);
+      }
+
+      .dots {
+        display: flex;
+        gap: 8px;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #8ec7ff;
+      }
+
+      .address-bar {
+        flex: 1;
+        height: 30px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(80, 155, 230, 0.32);
+      }
+
+      .browser-content {
+        height: calc(100% - 62px);
+        display: grid;
+        place-items: center;
+        background: linear-gradient(160deg, rgba(73, 168, 255, 0.15), rgba(255, 255, 255, 0.95));
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.3rem, 7vw, 5rem);
+        color: #0d5ea8;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        text-shadow: 0 8px 18px rgba(73, 168, 255, 0.27);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="browser" aria-label="Stylized browser window">
+      <div class="browser-top">
+        <div class="dots" aria-hidden="true">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="address-bar" aria-hidden="true"></div>
+      </div>
+      <section class="browser-content">
+        <h1>Akbarloh</h1>
+      </section>
+    </main>
+  </body>
+</html>
