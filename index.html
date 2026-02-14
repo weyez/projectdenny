@@ -75,7 +75,7 @@
 
       .controls {
         display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: 1fr auto auto;
         gap: 10px;
       }
 
@@ -94,18 +94,35 @@
         box-shadow: 0 0 0 3px rgba(61, 157, 243, 0.2);
       }
 
-      button {
+      button,
+      .external-link {
         border: none;
         border-radius: 999px;
-        padding: 0 20px;
+        padding: 0 18px;
         background: linear-gradient(135deg, #2d8ee7, #64bbff);
         color: white;
         font-weight: 600;
         cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
       }
 
-      button:hover {
+      .external-link {
+        background: linear-gradient(135deg, #1e6fb8, #4ca6ee);
+      }
+
+      button:hover,
+      .external-link:hover {
         filter: brightness(1.05);
+      }
+
+      .hint {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #356da0;
       }
 
       .browser-content {
@@ -138,6 +155,12 @@
         letter-spacing: 0.05em;
         text-transform: uppercase;
       }
+
+      @media (max-width: 760px) {
+        .controls {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
@@ -159,8 +182,10 @@
             placeholder="Введи адрес, например: https://example.com"
             aria-label="Адрес сайта"
           />
-          <button type="submit">Открыть</button>
+          <button type="submit">Открыть внутри</button>
+          <a id="externalLink" class="external-link" href="#" target="_blank" rel="noopener noreferrer">Открыть напрямую</a>
         </form>
+        <p class="hint">Некоторые сайты (например, YouTube) запрещают открытие внутри iframe. Используй «Открыть напрямую».</p>
       </div>
 
       <section class="browser-content">
@@ -168,7 +193,7 @@
         <div class="fallback" id="fallback">
           <div>
             <h1>Akbarloh</h1>
-            <p>Теперь можно вводить ссылку сверху и нажимать «Открыть».</p>
+            <p>Теперь можно вводить ссылку сверху и открывать сайт внутри или напрямую.</p>
           </div>
         </div>
       </section>
@@ -179,6 +204,7 @@
       const input = document.getElementById('urlInput');
       const frame = document.getElementById('siteFrame');
       const fallback = document.getElementById('fallback');
+      const externalLink = document.getElementById('externalLink');
 
       function normalizeUrl(value) {
         const trimmed = value.trim();
@@ -187,18 +213,28 @@
         return `https://${trimmed}`;
       }
 
+      function setExternalLink(url) {
+        externalLink.href = url || '#';
+      }
+
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         const url = normalizeUrl(input.value);
         if (!url) {
+          setExternalLink('');
           fallback.style.display = 'grid';
           frame.style.display = 'none';
           return;
         }
 
+        setExternalLink(url);
         frame.src = url;
         frame.style.display = 'block';
         fallback.style.display = 'none';
+      });
+
+      input.addEventListener('input', () => {
+        setExternalLink(normalizeUrl(input.value));
       });
     </script>
   </body>
