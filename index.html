@@ -185,7 +185,7 @@
           <button type="submit">Открыть внутри</button>
           <a id="externalLink" class="external-link" href="#" target="_blank" rel="noopener noreferrer">Открыть напрямую</a>
         </form>
-        <p class="hint">Некоторые сайты (например, YouTube) запрещают открытие внутри iframe. Используй «Открыть напрямую».</p>
+        <p class="hint">Сайты открываются через встроенный proxy, чтобы работать внутри окна браузера.</p>
       </div>
 
       <section class="browser-content">
@@ -228,7 +228,7 @@
         }
 
         setExternalLink(url);
-        frame.src = url;
+        frame.src = `/proxy?url=${encodeURIComponent(url)}`;
         frame.style.display = 'block';
         fallback.style.display = 'none';
       });
