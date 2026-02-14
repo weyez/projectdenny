@@ -185,7 +185,7 @@
           <button type="submit">Открыть внутри</button>
           <a id="externalLink" class="external-link" href="#" target="_blank" rel="noopener noreferrer">Открыть напрямую</a>
         </form>
-        <p class="hint">Сайты открываются через встроенный proxy, чтобы работать внутри окна браузера.</p>
+        <p class="hint" id="modeHint">Сайты открываются через встроенный proxy, чтобы работать внутри окна браузера.</p>
       </div>
 
       <section class="browser-content">
@@ -205,6 +205,8 @@
       const frame = document.getElementById('siteFrame');
       const fallback = document.getElementById('fallback');
       const externalLink = document.getElementById('externalLink');
+      const modeHint = document.getElementById('modeHint');
+      const isGithubPages = window.location.hostname.endsWith('github.io');
 
       function normalizeUrl(value) {
         const trimmed = value.trim();
@@ -213,9 +215,23 @@
         return `https://${trimmed}`;
       }
 
+      function toReaderProxy(url) {
+        const noScheme = url.replace(/^https?:\/\//i, '');
+        return `https://r.jina.ai/http://${noScheme}`;
+      }
+
+      function getInFrameUrl(url) {
+        if (isGithubPages) return toReaderProxy(url);
+        return `/proxy?url=${encodeURIComponent(url)}`;
+      }
+
       function setExternalLink(url) {
         externalLink.href = url || '#';
       }
+
+      modeHint.textContent = isGithubPages
+        ? 'GitHub Pages не умеет запускать Python proxy, поэтому используется веб-proxy для открытия внутри окна.'
+        : 'Сайты открываются через встроенный proxy, чтобы работать внутри окна браузера.';
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -228,7 +244,7 @@
         }
 
         setExternalLink(url);
-        frame.src = `/proxy?url=${encodeURIComponent(url)}`;
+        frame.src = getInFrameUrl(url);
         frame.style.display = 'block';
         fallback.style.display = 'none';
       });
