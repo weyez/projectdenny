@@ -206,7 +206,6 @@
       const fallback = document.getElementById('fallback');
       const externalLink = document.getElementById('externalLink');
       const modeHint = document.getElementById('modeHint');
-      const isGithubPages = window.location.hostname.endsWith('github.io');
 
       function normalizeUrl(value) {
         const trimmed = value.trim();
@@ -215,13 +214,7 @@
         return `https://${trimmed}`;
       }
 
-      function toReaderProxy(url) {
-        const noScheme = url.replace(/^https?:\/\//i, '');
-        return `https://r.jina.ai/http://${noScheme}`;
-      }
-
       function getInFrameUrl(url) {
-        if (isGithubPages) return toReaderProxy(url);
         return `/proxy?url=${encodeURIComponent(url)}`;
       }
 
@@ -229,9 +222,7 @@
         externalLink.href = url || '#';
       }
 
-      modeHint.textContent = isGithubPages
-        ? 'GitHub Pages не умеет запускать Python proxy, поэтому используется веб-proxy для открытия внутри окна.'
-        : 'Сайты открываются через встроенный proxy, чтобы работать внутри окна браузера.';
+      modeHint.textContent = 'Сайты открываются через ваш локальный/серверный Python proxy (`/proxy`).';
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
