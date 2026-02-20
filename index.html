@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Akbarloh Browser — Scramjet Style</title>
+    <style>
+      :root {
+        --bg-1: #120620;
+        --bg-2: #23083b;
+        --panel: #1a1130;
+        --panel-soft: #24163f;
+        --neon: #c020ff;
+        --neon-2: #8d36ff;
+        --text: #f4edff;
+        --muted: #cdb9ef;
+        --line: rgba(219, 176, 255, 0.22);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 20% 10%, #3a1068 0, transparent 32%),
+          radial-gradient(circle at 80% 90%, #61179b 0, transparent 36%),
+          linear-gradient(150deg, var(--bg-1), var(--bg-2));
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+
+      .browser {
+        width: min(96vw, 1180px);
+        height: min(90vh, 760px);
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: rgba(10, 5, 20, 0.72);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 24px rgba(192, 32, 255, 0.25);
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .browser-top {
+        background: linear-gradient(180deg, rgba(53, 20, 87, 0.95), rgba(24, 14, 44, 0.95));
+        border-bottom: 1px solid var(--line);
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .row { display: flex; align-items: center; gap: 10px; }
+      .grow { flex: 1; }
+
+      .dots { display: flex; gap: 8px; }
+      .dot { width: 12px; height: 12px; border-radius: 50%; background: #8c53ff; }
+
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .engine {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: #ffd8ff;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 201, 255, 0.3);
+        background: rgba(192, 32, 255, 0.15);
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: 170px 1fr auto auto;
+        gap: 10px;
+      }
+
+      select,
+      #urlInput {
+        min-height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        color: var(--text);
+        background: var(--panel-soft);
+        padding: 0 12px;
+        font-size: 0.98rem;
+      }
+
+      #urlInput:focus,
+      select:focus { outline: 2px solid rgba(192, 32, 255, 0.4); }
+
+      button,
+      .external-link {
+        min-height: 44px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--neon), var(--neon-2));
+        color: #fff;
+        padding: 0 16px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .external-link { background: linear-gradient(135deg, #6a4bff, #7c39d6); }
+
+      .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .browser-content {
+        background: linear-gradient(160deg, rgba(26, 17, 48, 0.95), rgba(18, 10, 31, 0.96));
+        padding: 12px;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #05040a;
+      }
+
+      .fallback {
+        height: 100%;
+        display: grid;
+        place-items: center;
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .fallback h1 {
+        margin: 0 0 8px;
+        color: #ffffff;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 960px) {
+        .controls { grid-template-columns: 1fr; }
+        .engine { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="browser" aria-label="Interactive browser mockup">
+      <div class="browser-top">
+        <div class="row">
+          <div class="dots" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <div class="brand">Akbarloh</div>
+          <div class="engine">Scramjet Engine</div>
+        </div>
+
+        <form class="controls" id="browserForm">
+          <select id="engineSelect" aria-label="Search engine">
+            <option value="https://duckduckgo.com" selected>DuckDuckGo</option>
+            <option value="https://www.google.com">Google</option>
+            <option value="https://www.bing.com">Bing</option>
+          </select>
+          <input id="urlInput" type="text" value="https://duckduckgo.com" aria-label="Адрес сайта" />
+          <button type="submit">Открыть внутри</button>
+          <a id="externalLink" class="external-link" href="https://duckduckgo.com" target="_blank" rel="noopener noreferrer">Открыть напрямую</a>
+        </form>
+        <p class="hint" id="modeHint">Scramjet-стиль включен, стартовая страница внутри: DuckDuckGo.</p>
+      </div>
+
+      <section class="browser-content">
+        <iframe id="siteFrame" title="Browser content"></iframe>
+        <div class="fallback" id="fallback">
+          <div>
+            <h1>Akbarloh</h1>
+            <p>Выбери движок и открой сайт внутри окна браузера.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('browserForm');
+      const input = document.getElementById('urlInput');
+      const frame = document.getElementById('siteFrame');
+      const fallback = document.getElementById('fallback');
+      const externalLink = document.getElementById('externalLink');
+      const engineSelect = document.getElementById('engineSelect');
+
+      function normalizeUrl(value) {
+        const trimmed = value.trim();
+        if (!trimmed) return '';
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+        return `https://${trimmed}`;
+      }
+
+      function inFrameUrl(url) {
+        return `/proxy?url=${encodeURIComponent(url)}`;
+      }
+
+      function openInside(url) {
+        frame.src = inFrameUrl(url);
+        frame.style.display = 'block';
+        fallback.style.display = 'none';
+      }
+
+      function setExternalLink(url) {
+        externalLink.href = url || '#';
+      }
+
+      engineSelect.addEventListener('change', () => {
+        input.value = engineSelect.value;
+        const url = normalizeUrl(input.value);
+        setExternalLink(url);
+        openInside(url);
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const url = normalizeUrl(input.value);
+        if (!url) {
+          setExternalLink('');
+          fallback.style.display = 'grid';
+          frame.style.display = 'none';
+          return;
+        }
+        setExternalLink(url);
+        openInside(url);
+      });
+
+      input.addEventListener('input', () => {
+        setExternalLink(normalizeUrl(input.value));
+      });
+
+      const startUrl = normalizeUrl(input.value);
+      setExternalLink(startUrl);
+      openInside(startUrl);
+    </script>
+  </body>
+</html>
